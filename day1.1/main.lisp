@@ -2,8 +2,7 @@
 
 ; functions
 (defun get-fuel-needed (mass)
-	(- (floor (/ mass 3)) 2)
-)
+	(- (floor (/ mass 3)) 2))
 
 ; asserts based on examples (cheap unit test, aherm)
 (assert (= 2 (get-fuel-needed 12)))
@@ -14,14 +13,9 @@
 ; Now build a running total of fuel based on the masses defined in the input
 (defvar total-fuel-needed 0)
 
-(let ((in (open "input" :if-does-not-exist nil)))
-	(when in
-	  	(loop for line = (read-line in nil) while line do 
-			(incf total-fuel-needed (get-fuel-needed (parse-integer line)))
-		)
-		(close in)
-	)
-)
+(with-open-file (in "input")
+	(loop for line = (read-line in nil) while line do 
+		(incf total-fuel-needed (get-fuel-needed (parse-integer line)))))
 
 ; Result
 (format t "Total fuel needed: ~a~%" total-fuel-needed)
